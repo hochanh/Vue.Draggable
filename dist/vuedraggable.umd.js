@@ -4181,19 +4181,17 @@ var draggableComponent = {
       });
     },
     doDragAddList: function doDragAddList(evt, elements) {
-      var _this7 = this;
-
       if (elements.length === 0) {
         return;
       }
 
       evt.items.forEach(helper["d" /* removeNode */]);
       var newIndexFrom = this.getVmIndex(evt.newIndex);
+      this.alterList(function (list) {
+        return list.splice.apply(list, [newIndexFrom, 0].concat(_toConsumableArray(elements)));
+      });
       var added = elements.map(function (element, index) {
         var newIndex = newIndexFrom + index;
-
-        _this7.spliceList(newIndex, 0, element);
-
         return {
           element: element,
           newIndex: newIndex
@@ -4231,10 +4229,10 @@ var draggableComponent = {
       });
     },
     doDragRemoveList: function doDragRemoveList(evt) {
-      var _this8 = this;
+      var _this7 = this;
 
       evt.items.forEach(function (item, index) {
-        Object(helper["c" /* insertNodeAt */])(_this8.rootContainer, item, evt.oldIndex + index);
+        Object(helper["c" /* insertNodeAt */])(_this7.rootContainer, item, evt.oldIndex + index);
       });
 
       if (evt.pullMode === "clone") {
@@ -4248,14 +4246,17 @@ var draggableComponent = {
       var removed = reversed.map(function (item) {
         var oldIndex = item.index;
 
-        _this8.spliceList(oldIndex, 1);
-
-        _this8.resetTransitionData(oldIndex);
+        _this7.resetTransitionData(oldIndex);
 
         return {
           element: item.element,
           oldIndex: oldIndex
         };
+      });
+      this.alterList(function (list) {
+        removed.forEach(function (removedItem) {
+          list.splice(removedItem.oldIndex, 1);
+        });
       });
       this.computeIndexes();
       this.emitChanges({
@@ -4285,10 +4286,10 @@ var draggableComponent = {
       });
     },
     doDragUpdateList: function doDragUpdateList(evt) {
-      var _this9 = this;
+      var _this8 = this;
 
       evt.items.forEach(function (item, index) {
-        var c = _this9.context[index];
+        var c = _this8.context[index];
         Object(helper["d" /* removeNode */])(item);
         Object(helper["c" /* insertNodeAt */])(evt.from, item, c.index);
       });
