@@ -3663,6 +3663,7 @@ function _toConsumableArray(arr) {
 }
 // EXTERNAL MODULE: external {"commonjs":"sortablejs","commonjs2":"sortablejs","amd":"sortablejs","root":"Sortable"}
 var external_commonjs_sortablejs_commonjs2_sortablejs_amd_sortablejs_root_Sortable_ = __webpack_require__("a352");
+var external_commonjs_sortablejs_commonjs2_sortablejs_amd_sortablejs_root_Sortable_default = /*#__PURE__*/__webpack_require__.n(external_commonjs_sortablejs_commonjs2_sortablejs_amd_sortablejs_root_Sortable_);
 
 // EXTERNAL MODULE: ./src/util/helper.js
 var helper = __webpack_require__("c649");
@@ -3681,9 +3682,9 @@ var helper = __webpack_require__("c649");
 
 
 
-if (!external_commonjs_sortablejs_commonjs2_sortablejs_amd_sortablejs_root_Sortable_["MultiDrag"].singleton) {
+if (external_commonjs_sortablejs_commonjs2_sortablejs_amd_sortablejs_root_Sortable_["MultiDrag"] && !external_commonjs_sortablejs_commonjs2_sortablejs_amd_sortablejs_root_Sortable_["MultiDrag"].singleton) {
   external_commonjs_sortablejs_commonjs2_sortablejs_amd_sortablejs_root_Sortable_["MultiDrag"].singleton = new external_commonjs_sortablejs_commonjs2_sortablejs_amd_sortablejs_root_Sortable_["MultiDrag"]();
-  external_commonjs_sortablejs_commonjs2_sortablejs_amd_sortablejs_root_Sortable_["Sortable"].mount(external_commonjs_sortablejs_commonjs2_sortablejs_amd_sortablejs_root_Sortable_["MultiDrag"].singleton);
+  external_commonjs_sortablejs_commonjs2_sortablejs_amd_sortablejs_root_Sortable_default.a.mount(external_commonjs_sortablejs_commonjs2_sortablejs_amd_sortablejs_root_Sortable_["MultiDrag"].singleton);
 }
 
 function buildAttribute(object, propName, value) {
@@ -3945,7 +3946,7 @@ var draggableComponent = {
       options.selectedClass = this.selectedClass;
     }
 
-    this._sortable = new external_commonjs_sortablejs_commonjs2_sortablejs_amd_sortablejs_root_Sortable_["Sortable"](this.rootContainer, options);
+    this._sortable = new external_commonjs_sortablejs_commonjs2_sortablejs_amd_sortablejs_root_Sortable_default.a(this.rootContainer, options);
     this.computeIndexes();
   },
   beforeDestroy: function beforeDestroy() {
@@ -4232,7 +4233,7 @@ var draggableComponent = {
       var _this7 = this;
 
       evt.items.forEach(function (item, index) {
-        Object(helper["c" /* insertNodeAt */])(_this7.rootContainer, item, evt.oldIndex + index);
+        Object(helper["c" /* insertNodeAt */])(_this7.rootContainer, item, evt.oldIndicies[index].index);
       });
 
       if (evt.pullMode === "clone") {
@@ -4361,7 +4362,7 @@ var draggableComponent = {
       return onMove(sendEvt, originalEvent);
     },
     onDragEnd: function onDragEnd(evt) {
-      evt.items.forEach(external_commonjs_sortablejs_commonjs2_sortablejs_amd_sortablejs_root_Sortable_["Sortable"].utils.deselect);
+      evt.items.forEach(external_commonjs_sortablejs_commonjs2_sortablejs_amd_sortablejs_root_Sortable_default.a.utils.deselect);
       this.computeIndexes();
       draggingElement = null;
     }
