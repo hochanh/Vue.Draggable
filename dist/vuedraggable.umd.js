@@ -4025,23 +4025,7 @@ var draggableComponent = {
       };
     },
     getUnderlyingVmList: function getUnderlyingVmList(htmlElts) {
-      var _this5 = this;
-
-      var list = htmlElts.map(function (htmlElt) {
-        var index = computeVmIndex(_this5.getChildrenNodes() || [], htmlElt);
-
-        if (index === -1) {
-          //Edge case during move callback: related element might be
-          //an element different from collection
-          return null;
-        }
-
-        var element = _this5.realList[index];
-        return {
-          index: index,
-          element: element
-        };
-      });
+      var list = htmlElts.map(this.getUnderlyingVm);
       return list.filter(function (e) {
         return !!e;
       });
@@ -4057,10 +4041,10 @@ var draggableComponent = {
       return vue.$parent;
     },
     emitChanges: function emitChanges(evt) {
-      var _this6 = this;
+      var _this5 = this;
 
       this.$nextTick(function () {
-        _this6.$emit("change", evt);
+        _this5.$emit("change", evt);
       });
     },
     alterList: function alterList(onList) {
@@ -4230,10 +4214,10 @@ var draggableComponent = {
       });
     },
     doDragRemoveList: function doDragRemoveList(evt) {
-      var _this7 = this;
+      var _this6 = this;
 
       evt.items.forEach(function (item, index) {
-        Object(helper["c" /* insertNodeAt */])(_this7.rootContainer, item, evt.oldIndicies[index].index);
+        Object(helper["c" /* insertNodeAt */])(_this6.rootContainer, item, evt.oldIndicies[index].index);
       });
 
       if (evt.pullMode === "clone") {
@@ -4247,7 +4231,7 @@ var draggableComponent = {
       var removed = reversed.map(function (item) {
         var oldIndex = item.index;
 
-        _this7.resetTransitionData(oldIndex);
+        _this6.resetTransitionData(oldIndex);
 
         return {
           element: item.element,
@@ -4287,13 +4271,14 @@ var draggableComponent = {
       });
     },
     doDragUpdateList: function doDragUpdateList(evt) {
-      var _this8 = this;
+      var _this7 = this;
 
       evt.items.forEach(function (item, index) {
-        var c = _this8.context[index];
+        var c = _this7.context[index];
         Object(helper["d" /* removeNode */])(item);
         Object(helper["c" /* insertNodeAt */])(evt.from, item, c.index);
-      });
+      }); // eslint-disable-next-line prettier/prettier
+
       var newIndexFrom = this.getVmIndex(evt.newIndex) - evt.items.indexOf(evt.item);
       var moved = this.context.map(function (item, index) {
         var oldIndex = item.index;
